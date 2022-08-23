@@ -2,10 +2,10 @@
 #website for reference#
 
 Required files: 
-1) ASV table produced through R metabarcoding diet analsyis script (.csv)
-2) reference database and marker gene speciic trained classifier (.qza) (if new classifier needs to be trained, see note: "training a qiime classifier")
+1) ASV table produced through R metabarcoding diet analsyis script (InsectCOI_asv_table1.csv)
+2) reference database and marker gene speciic trained classifier (bold_anml_classifier.qza) (if new classifier needs to be trained, see note: "training a qiime classifier")
 
-#from original ASV table, create new csv file with 2 columns: 1st column is ASV1-ASVn (n = number of sequence variants), 2nd column is ASV's pulled from ASV table
+#from original ASV table, create new csv file with 2 columns: 1st column is ASV1-ASVn (n = number of sequence variants), 2nd column is ASV's pulled from ASV table (InsectCOI2.csv)
 #convert csv to fasta
 awk -F , '{print ">"$1"\n"$2}' InsectCOI2.csv > InsectCOI2.fas
 
