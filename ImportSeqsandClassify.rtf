@@ -1,8 +1,10 @@
 
-#website for reference#
+#websites for reference#
+https://docs.qiime2.org/2022.2/tutorials/feature-classifier/
+https://forum.qiime2.org/t/building-a-coi-database-from-bold-references/16129
 
 Required files: 
-1) ASV table produced through R metabarcoding diet analsyis script (InsectCOI_asv_table1.csv)
+1) ASV table produced through R metabarcoding diet analsyis script (InsectCOI_asv_table1.csv), these are sequences that need to be assigned to taxa
 2) reference database and marker gene speciic trained classifier (bold_anml_classifier.qza) (if new classifier needs to be trained, see note: "training a qiime classifier")
 
 #from original ASV table, create new csv file with 2 columns: 1st column is ASV1-ASVn (n = number of sequence variants), 2nd column is ASV's pulled from ASV table (InsectCOI2.csv)
@@ -16,6 +18,10 @@ qiime tools import \
 --output-path Insects2.qza
 
 #assign taxonomy to the unknown insect COI seqs using the pre-trained, locus-specific classifier 
+#"The raw BOLD sequences were initially filtered for ambiguous nucleotide content (5 or more N's), long homopolymer runs (12 or more), very short (< 250 bp) or very long (> 1600 bp) sequences, and dereplicated."
+#this is a primer-trimmed COI database, specific to the ANML primers we used for bat diet analysis. The ANML primer set is specific to arthropods, 
+#so we COULD filter even further, e.g., for taxa such as class insecta, but I did not.
+#(info on trimming reference sequences based on primer set is in note "training a qiime classifier")
 qiime feature-classifier classify-sklearn \
 --i-classifier bold_anml_classifier.qza \
 --i-reads Insects2.qza \
