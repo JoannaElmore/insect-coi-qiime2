@@ -1,43 +1,30 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2636
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fmodern\fcharset0 Courier;
-\f3\fmodern\fcharset0 Courier-Bold;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red38\green38\blue38;\red242\green242\blue242;
-\red50\green91\blue142;\red242\green242\blue242;\red50\green91\blue142;}
-{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c20000\c20000\c20000;\cssrgb\c96078\c96078\c96078;
-\cssrgb\c25098\c43922\c62745;\cssrgb\c96078\c96078\c96078;\cssrgb\c25098\c43922\c62745;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf0 qiime tools import \\\
- --type 'FeatureData[Sequence]' \\\
---input-path 
-\f1\fs22 \cf2 \CocoaLigature0 InsectCOI2.fas
-\f0\fs24 \cf0 \CocoaLigature1  \\\
---output-path Insects2.qza\
-\
-\pard\pardeftab720\partightenfactor0
+#website for reference#
 
-\f2\fs28 \cf3 \cb4 \expnd0\expndtw0\kerning0
-qiime feature-classifier classify-sklearn 
-\f3\b \cf5 \\
-\f2\b0 \cf3 \
-  --i-classifier 
-\f1\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 bold_anml_classifier.qza
-\f2\fs28 \cf3 \cb4 \expnd0\expndtw0\kerning0
-\CocoaLigature1  
-\f3\b \cf5 \\
-\f2\b0 \cf3 \
-  --i-reads Insects2.qza 
-\f3\b \cf5 \\
-\f2\b0 \cf3 \
-  --o-classification taxonomy2.qza\
-\
-\cf3 \cb6 \outl0\strokewidth0 \strokec3 qiime metadata tabulate 
-\f3\b \cf7 \strokec7 \\
-\f2\b0 \cf3 \strokec3 \
-\pard\pardeftab720\partightenfactor0
-\cf3   --m-input-file taxonomy2.qza 
-\f3\b \cf7 \strokec7 \\
-\f2\b0 \cf3 \strokec3 \
-  --o-visualization taxonomy2.qzv\
-}
+Required files: 
+1) ASV table produced through R metabarcoding diet analsyis script (.csv)
+2) reference database and marker gene speciic trained classifier (.qza) (if new classifier needs to be trained, see note: "training a qiime classifier")
+
+#from original ASV table, create new csv file with 2 columns: 1st column is ASV1-ASVn (n = number of sequence variants), 2nd column is ASV's pulled from ASV table
+#convert csv to fasta
+awk -F , '{print ">"$1"\n"$2}' InsectCOI2.csv > InsectCOI2.fas
+
+#import the fasta file generated from ASV file
+qiime tools import \
+--type 'FeatureData[Sequence]' \
+--input-path InsectCOI2.fas \
+--output-path Insects2.qza
+
+#assign taxonomy to the unknown insect COI seqs using the pre-trained, locus-specific classifier 
+qiime feature-classifier classify-sklearn \
+--i-classifier bold_anml_classifier.qza \
+--i-reads Insects2.qza \
+--o-classification taxonomy2.qza
+
+#generate the metadate table
+qiime metadata tabulate \
+--m-input-file taxonomy2.qza \
+--o-visualization taxonomy2.qzv
+
+#view the metadata table
+qiime tools view taxonomy2.qzv
