@@ -8,8 +8,8 @@ Required files:
 2) reference database and marker gene speciic trained classifier (bold_anml_classifier.qza) (if new classifier needs to be trained, see note: "training a qiime classifier")
 
 #from original ASV table (InsectCOI_asv_table1.csv), create new csv file with 2 columns: 1st column is ASV1-ASVn (n = number of sequence variants), 2nd column is ASV's pulled from ASV table
-#convert newly created csv (InsectCOI2.csv) to fasta
-awk -F , '{print ">"$1"\n"$2}' InsectCOI2.csv > InsectCOI2.fas
+#convert newly created csv (InsectCOI.csv) to fasta
+awk -F , '{print ">"$1"\n"$2}' InsectCOI.csv > InsectCOI2.fas
 
 #import the fasta file generated from ASV file
 qiime tools import \
