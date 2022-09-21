@@ -9,6 +9,5 @@ Required files:
 1) ASV table produced through R metabarcoding diet analsyis script, these are sequences that need to be assigned to taxa (Here: InsectCOI_asv_table1.csv)
 2) reference database and marker gene speciic trained classifier (Here: bold_anml_classifier.qza) 
 
+ImportSeqsandClassify.rtf will walk you through the process of importing and classifying ASV's using a trained classifier via conda's qiime2 (python)
 NOTE: if a new classifier needs to be trained, see note: "training a qiime classifier"
-
-
