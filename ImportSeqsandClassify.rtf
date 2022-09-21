@@ -11,6 +11,12 @@ Required files:
 #convert newly created csv (InsectCOI.csv) to fasta
 awk -F , '{print ">"$1"\n"$2}' InsectCOI.csv > InsectCOI2.fas
 
+#cd into directory containing the sequences that need classification and the classifier (or cp or ln the files)
+#once youve installed qiime2 and created a qiime2 environment, activate it using the environment’s name:
+conda activate qiime2-2022.2
+#to deactivate
+#conda deactivate
+
 #import the fasta file generated from ASV file
 qiime tools import \
 --type 'FeatureData[Sequence]' \
